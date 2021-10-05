@@ -5,7 +5,7 @@ function RightBox() {
 }
 
 const Right = styled.div`
-  flex: 0.65;
+  flex: 0.7;
   display: flex;
   flex-direction: column;
 `;

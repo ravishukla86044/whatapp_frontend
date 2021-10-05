@@ -8,8 +8,8 @@ function LeftBox() {
   return (
     <Left>
       <div className="leftBox_Header">
+        <Avatar>d</Avatar>
         <div className="headerRight">
-          <Avatar>d</Avatar>
           <IconButton>
             <DonutLargeIcon />
           </IconButton>
@@ -21,18 +21,32 @@ function LeftBox() {
           </IconButton>
         </div>
       </div>
+      <div className="leftSearch"></div>
     </Left>
   );
 }
 
 const Left = styled.div`
-  flex: 0.35;
+  flex: 0.3;
   display: flex;
   flex-direction: column;
-
+  .leftBox_Header {
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
+    align-items: center;
+    border-right: 1px solid lightgrey;
+  }
   .headerRight {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    min-width: 10vw;
+  }
+  .headerRight .MuiSvgIcon-root {
+    font-size: 21px !important;
+  }
+  .leftSearch {
   }
 `;
 export { LeftBox };
