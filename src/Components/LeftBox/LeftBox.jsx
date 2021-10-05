@@ -87,6 +87,17 @@ const Left = styled.div`
     flex: 1;
     overflow: auto;
     background-color: white;
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+    ::-webkit-scrollbar-track {
+      background: hsla(0, 0%, 100%, 0.1);
+    }
   }
 `;
 export { LeftBox };
