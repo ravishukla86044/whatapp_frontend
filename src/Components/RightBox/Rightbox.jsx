@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 function RightBox() {
-  return <Right></Right>;
+  return <Right>Right</Right>;
 }
 
 const Right = styled.div`
