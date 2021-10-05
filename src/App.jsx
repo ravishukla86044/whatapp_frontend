@@ -5,8 +5,10 @@ import { RightBox } from "./Components/RightBox/Rightbox";
 function App() {
   return (
     <div className="App">
-      <LeftBox />
-      <RightBox />
+      <div className="box">
+        <LeftBox />
+        <RightBox />
+      </div>
     </div>
   );
 }
