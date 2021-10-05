@@ -6,6 +6,8 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { Message } from "./Message";
 import whatsappDark from "../../Assets/whatsappDark.png";
 import whatsappLight from "../../Assets/whatsappLight.png";
+import InsertEmoticonOutlinedIcon from "@material-ui/icons/InsertEmoticonOutlined";
+import MicOutlinedIcon from "@material-ui/icons/MicOutlined";
 
 function RightBox() {
   return (
@@ -32,6 +34,12 @@ function RightBox() {
         <div className="background"></div>
         <Message />
         <Message />
+      </div>
+      <div className="inputFooter">
+        <InsertEmoticonOutlinedIcon />
+        <AttachFileOutlinedIcon />
+        <input className="inputText" type="text" placeholder="Send a message" />
+        <MicOutlinedIcon />
       </div>
     </Right>
   );
@@ -90,6 +98,25 @@ const Right = styled.div`
     bottom: 0px;
     left: 0px;
     right: 0px;
+  }
+
+  .inputFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 62px;
+    border-top: 1px solid lightgray;
+  }
+  .inputText {
+    flex: 1;
+    border: none;
+    outline-width: 0px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  .inputFooter .MuiSvgIcon-root {
+    padding: 10px;
+    color: grey;
   }
 `;
 export { RightBox };
