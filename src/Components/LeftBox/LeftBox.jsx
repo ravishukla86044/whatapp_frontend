@@ -3,6 +3,8 @@ import ChatIcon from "@material-ui/icons/Chat";
 import DonutLargeIcon from "@material-ui/icons/DonutLarge";
 import { Avatar, IconButton } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
+import { ChatRoomItem } from "./ChatRoomItem";
 
 function LeftBox() {
   return (
@@ -21,7 +23,18 @@ function LeftBox() {
           </IconButton>
         </div>
       </div>
-      <div className="leftSearch"></div>
+      <div className="leftSearch">
+        <div className="leftSearch_Con">
+          <SearchOutlinedIcon />
+          <input type="text" placeholder="Search or Start a new chat" />
+        </div>
+      </div>
+      <div className="chatroom">
+        <ChatRoomItem />
+        <ChatRoomItem />
+        <ChatRoomItem />
+        <ChatRoomItem />
+      </div>
     </Left>
   );
 }
@@ -47,6 +60,33 @@ const Left = styled.div`
     font-size: 21px !important;
   }
   .leftSearch {
+    display: flex;
+    align-items: center;
+    background-color: #f6f6f6;
+    height: 40px;
+    padding: 10px;
+  }
+  .leftSearch_Con {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    width: 100%;
+    height: 35px;
+    border-radius: 20px;
+  }
+  .leftSearch_Con .MuiSvgIcon-root {
+    color: grey;
+    padding: 10px;
+  }
+  .leftSearch_Con input {
+    border: none;
+    margin-left: 10px;
+    outline-width: 0px;
+  }
+  .chatroom {
+    flex: 1;
+    overflow: auto;
+    background-color: white;
   }
 `;
 export { LeftBox };
