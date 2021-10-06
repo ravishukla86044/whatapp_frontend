@@ -42,7 +42,8 @@ function Signup() {
 
   const handelSubmit = (e) => {
     validateLogin();
-    if (error.email === false && !error.password === false && error.name === false) {
+    if (error.email === false && error.password === false && error.name === false) {
+      console.log("1");
       dispatch(registerUser(form));
     }
   };

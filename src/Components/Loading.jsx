@@ -4,7 +4,7 @@ import Spinner from "react-spinkit";
 function Loading() {
   return (
     <AppLoading>
-      <Spinner name="ball-spin-fade-loader" color="#0079D3" fadeIn="none" />
+      <Spinner name="ball-spin-fade-loader" color="rgb(20 131 29)" fadeIn="none" />
     </AppLoading>
   );
 }

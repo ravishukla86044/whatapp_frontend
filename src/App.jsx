@@ -5,10 +5,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Loading } from "./Components/Loading";
 import { LoginOrSignUp } from "./Components/LoginOrSignup/LoginOrSignUp";
+import { useSelector } from "react-redux";
 
 function App() {
-  const [user, setUser] = useState();
-
+  const { user } = useSelector((state) => state.auth);
   useEffect(() => {}, []);
 
   return (

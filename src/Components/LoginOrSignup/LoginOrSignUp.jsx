@@ -75,6 +75,8 @@ const Div = styled.div`
   .loading {
     position: absolute;
     z-index: 12;
+    top: 0;
+    bottom: 0;
   }
   .lastText {
     font-size: 14px;

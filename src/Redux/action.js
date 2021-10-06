@@ -87,9 +87,11 @@ const registerUser = (payload) => (dispatch) => {
   axios
     .post("http://localhost:3001/register", payload)
     .then((res) => {
+      console.log("rigister", res.data);
       dispatch(registerSuccess(res.data));
     })
     .catch((err) => {
+      console.log("rigisterError", err);
       dispatch(registerFailure(err.response.data));
     });
 };
