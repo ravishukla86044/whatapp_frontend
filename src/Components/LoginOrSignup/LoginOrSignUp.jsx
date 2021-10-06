@@ -20,7 +20,7 @@ function LoginOrSignUp() {
 
       {isLogin ? <Login /> : <Signup />}
       <p className="loginText" onClick={() => setIslogin((pre) => !pre)}>
-        {isLogin ? "Singup" : "Login"}
+        {isLogin ? "or  Singup" : "or  Login"}
       </p>
       <p className="lastText">
         Powered by <strong>React JS - MongoDB</strong> | Designed by <strong>Ravi Shukla</strong>{" "}
@@ -80,6 +80,7 @@ const Div = styled.div`
   }
   .loginText {
     color: teal;
+    cursor: pointer;
   }
 `;
 export { LoginOrSignUp };

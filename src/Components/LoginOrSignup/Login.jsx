@@ -100,6 +100,7 @@ const Log = styled.div`
   .loginSubmit {
     display: flex;
     justify-content: center;
+    margin-bottom: 10px;
   }
   .loginSubmit .MuiButton-containedPrimary {
     border-radius: 50px;
