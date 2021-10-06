@@ -35,7 +35,7 @@ function Signup() {
     else if (form?.email === "") setError({ error, email: "Email is required" });
     else if (form?.password === "") setError({ error, password: "Password is required" });
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form?.email))
-      setError({ error, email: "Ivalid email" });
+      setError({ error, email: "Invalid email" });
     else if (form?.password.length < 8)
       setError({ ...error, password: "Password must be atleast 8 characters long" });
   };

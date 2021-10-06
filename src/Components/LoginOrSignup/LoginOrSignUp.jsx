@@ -36,16 +36,19 @@ function LoginOrSignUp() {
 
 const Div = styled.div`
   position: relative;
-
+  box-sizing: border-box;
   background-color: #ece5dd;
   height: 100%;
   padding: 20px;
-  padding-top: 50px;
+  /* padding-top: 20px; */
   align-items: center;
   justify-content: center;
   display: flex;
   flex-direction: column;
-
+  & > img {
+    width: 100px;
+    height: 100px;
+  }
   & > h1 {
     margin: 20px;
     color: rgb(0, 61, 61);
@@ -77,6 +80,7 @@ const Div = styled.div`
     font-size: 14px;
     color: teal;
     margin-top: auto;
+    padding-top: 5px;
   }
   .loginText {
     color: teal;
