@@ -22,7 +22,7 @@ const initState = {
   isLight: true,
 };
 
-export const authReducer = (state = initState, { type, payload }) => {
+const authReducer = (state = initState, { type, payload }) => {
   switch (type) {
     case LOGIN_REQUEST: {
       return {
@@ -105,3 +105,5 @@ export const authReducer = (state = initState, { type, payload }) => {
       return state;
   }
 };
+
+export { authReducer };

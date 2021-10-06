@@ -47,7 +47,7 @@ const logOut = () => {
 const loginUser = (payload) => (dispatch) => {
   dispatch(loginRequest());
   axios
-    .post("https://reddit-new.herokuapp.com/login", payload)
+    .post("http://http://localhost:3001/login", payload)
     .then((res) => {
       console.log("res:", res);
 
@@ -85,7 +85,7 @@ const registerFailure = (payload) => {
 const registerUser = (payload) => (dispatch) => {
   dispatch(registerRequest());
   axios
-    .post("https://reddit-new.herokuapp.com/register", payload)
+    .post("http://localhost:3001/register", payload)
     .then((res) => {
       dispatch(registerSuccess(res.data));
     })
@@ -94,4 +94,16 @@ const registerUser = (payload) => (dispatch) => {
     });
 };
 
-export { loginUser, registerUser, updateProfile, logOut };
+const googleSignUp = (payload) => (dispatch) => {
+  dispatch(registerRequest());
+  axios
+    .post("http://localhost:3001/googlesignup", payload)
+    .then((res) => {
+      dispatch(registerSuccess(res.data));
+    })
+    .catch((err) => {
+      dispatch(registerFailure(err.response.data));
+    });
+};
+
+export { loginUser, registerUser, updateProfile, logOut, googleSignUp };
