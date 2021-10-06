@@ -7,7 +7,10 @@ import { useState } from "react";
 import { loginUser } from "../../Redux/action";
 
 function Login() {
-  const [form, setForm] = useState();
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState({
     email: false,
     password: false,
@@ -25,10 +28,13 @@ function Login() {
   };
 
   const validateLogin = () => {
-    if (form.email === "") setError({ error, email: "Email is required" });
-    if (form.password === "") setError({ error, password: "Password is required" });
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) setError({ error, email: "Ivalid email" });
-    if (form.password.length < 8)
+    if (form?.email === "" && form?.password === "")
+      setError({ email: "Email is required", password: "Password is required" });
+    else if (form?.email === "") setError({ error, email: "Email is required" });
+    else if (form?.password === "") setError({ error, password: "Password is required" });
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form?.email))
+      setError({ error, email: "Ivalid email" });
+    else if (form?.password.length < 8)
       setError({ ...error, password: "Password must be atleast 8 characters long" });
   };
 
@@ -41,33 +47,63 @@ function Login() {
 
   return (
     <Log>
-      <TextField
-        id="outlined-basic"
-        label="Email"
-        variant="outlined"
-        onKeyUp={onEnter}
-        name="email"
-        required
-        error={error.email}
-        helperText={error.email}
-      />
+      <div>
+        <TextField
+          id="outlined-basic"
+          label="Email"
+          variant="outlined"
+          onKeyUp={onEnter}
+          name="email"
+          required
+          error={error.email}
+          helperText={error.email}
+        />
+      </div>
 
-      <TextField
-        id="outlined-basic"
-        label="Password"
-        variant="outlined"
-        onKeyUp={onEnter}
-        name="password"
-        required
-        error={error.password}
-        helperText={error.password}
-      />
-      <Button variant="contained" color="primary" onClick={handelSubmit}>
-        Submit
-      </Button>
+      <div>
+        <TextField
+          id="outlined-basic"
+          label="Password"
+          variant="outlined"
+          onKeyUp={onEnter}
+          name="password"
+          required
+          error={error.password}
+          helperText={error.password}
+        />
+      </div>
+      <div className="loginSubmit">
+        <Button variant="contained" color="primary" onClick={handelSubmit}>
+          Login
+        </Button>
+      </div>
     </Log>
   );
 }
 
-const Log = styled.div``;
+const Log = styled.div`
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  & > div {
+    margin-top: 15px;
+  }
+
+  & .MuiFormControl-root {
+    width: 100%;
+    min-width: 300px;
+  }
+  & .MuiOutlinedInput-root {
+    border-radius: 50px;
+  }
+
+  .loginSubmit {
+    display: flex;
+    justify-content: center;
+  }
+  .loginSubmit .MuiButton-containedPrimary {
+    border-radius: 50px;
+    background-color: #189d0e;
+  }
+`;
 export { Login };
