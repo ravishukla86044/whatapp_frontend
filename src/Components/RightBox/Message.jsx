@@ -3,7 +3,7 @@ import Timestamp from "react-timestamp";
 import { useSelector } from "react-redux";
 
 function Message({ message }) {
-  console.log(message);
+  //console.log(message);
 
   const { user } = useSelector((state) => state.auth);
   return (
@@ -23,6 +23,7 @@ function Message({ message }) {
 
 const Mess = styled.div`
   font-size: 16px;
+  position: relative;
 
   margin-bottom: 30px;
 

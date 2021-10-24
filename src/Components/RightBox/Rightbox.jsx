@@ -9,30 +9,86 @@ import whatsappLight from "../../Assets/whatsappLight.png";
 import InsertEmoticonOutlinedIcon from "@material-ui/icons/InsertEmoticonOutlined";
 import MicOutlinedIcon from "@material-ui/icons/MicOutlined";
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import noChat from "../../Assets/noChat.jpg";
 import noChatLight from "../../Assets/noChatLight.jpg";
 import axios from "axios";
 import { setCurrentChatMessages } from "../../Redux/action";
+import { io } from "socket.io-client";
+import Picker from "emoji-picker-react";
 
 function RightBox() {
   const { currentChatRoom, user, currentChatMessages } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  const [text, setText] = useState();
+  const [currentChatRoomMembers, setCurrentChatRoomMembers] = useState();
+  const [chosenEmoji, setChosenEmoji] = useState(null);
+  const [hideEmoji, setHide] = useState(false);
+  const [text, setText] = useState("");
+  const onEmojiClick = (event, emojiObject) => {
+    setChosenEmoji(emojiObject);
 
+    setText((pre) => {
+      return pre + emojiObject.emoji;
+    });
+    console.log(text);
+    setHide(false);
+  };
+  const handelHideEmoji = () => {
+    console.log(hideEmoji);
+    setHide((pre) => !pre);
+  };
+
+  const dispatch = useDispatch();
+
+  const socket = useRef();
   const [mem, setMem] = useState([]);
+  const [arrivedM, setArrivedM] = useState();
+  const [userSocketId, setUsersocketId] = useState();
+  const scrollRef = useRef();
 
   useEffect(() => {
     extractMembers();
     //console.log(mem, members);
   }, [currentChatRoom]);
 
-  const extractMembers = () => {
-    let a = [];
-    for (var i = 0; i < currentChatRoom?.members?.length; i++) {
-      if (currentChatRoom?.members[i]?._id !== user?._id) a.push(currentChatRoom?.members[i]);
+  useEffect(() => {
+    socket.current = io("http://localhost:3001");
+    socket.current.on("welcome", (data) => {
+      // console.log(data);
+    });
+    socket.current.emit("addedUser", user._id);
+
+    socket.current.on("getMessage", (data) => {
+      setArrivedM({
+        senderId: data.senderId,
+        text: data.text,
+        createdAt: Date.now(),
+        chatroomId: data.chatroomId,
+      });
+    });
+
+    socket.current.on("getUsers", (users) => {
+      //console.log("users", users);
+      setUsersocketId(users);
+    });
+  }, [user]);
+
+  useEffect(() => {
+    if (arrivedM && currentChatRoom._id === arrivedM.chatroomId) {
+      let a = [...currentChatMessages, arrivedM];
+      dispatch(setCurrentChatMessages(a));
     }
 
+    console.log(currentChatRoom, arrivedM);
+  }, [arrivedM]);
+
+  const extractMembers = () => {
+    let a = [];
+    let all = [];
+    for (var i = 0; i < currentChatRoom?.members?.length; i++) {
+      if (currentChatRoom?.members[i]?._id !== user?._id) a.push(currentChatRoom?.members[i]);
+      all.push(currentChatRoom?.members[i]?._id);
+    }
+    setCurrentChatRoomMembers(all);
     setMem(a);
   };
 
@@ -44,8 +100,16 @@ function RightBox() {
       senderId: user._id,
       chatroomId: currentChatRoom._id,
     };
-    let a = [...currentChatMessages, payload];
-    dispatch(setCurrentChatMessages(a));
+    const receiverId = currentChatRoom.members.find((mem) => mem._id !== user._id);
+    socket.current.emit("sendMessage", {
+      senderId: user._id,
+      text: text,
+      receiverId,
+      chatroomId: currentChatRoom._id,
+    });
+
+    // let a = [...currentChatMessages, payload];
+    // dispatch(setCurrentChatMessages(a));
     try {
       axios.post("http://localhost:3001/messages", payload).then((res) => {
         console.log(res);
@@ -55,6 +119,10 @@ function RightBox() {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [currentChatMessages]);
 
   return (
     <Right>
@@ -83,14 +151,16 @@ function RightBox() {
             </div>
           </div>
           <div className="messagesDiv">
-            <div className="background"></div>
             {currentChatMessages?.map((a) => (
-              <Message message={a} />
+              <div ref={scrollRef}>
+                <Message message={a} key={a._id} />
+              </div>
             ))}
           </div>
           <div className="inputFooter">
-            <InsertEmoticonOutlinedIcon />
-            <AttachFileOutlinedIcon />
+            <InsertEmoticonOutlinedIcon className="emojiDiv" onClick={handelHideEmoji} />
+            {hideEmoji && <Picker onEmojiClick={onEmojiClick} />}
+
             <form style={{ padding: 0 }} className="inputText" onSubmit={handelSentMessage}>
               <input
                 className="inputText"
@@ -116,6 +186,16 @@ const Right = styled.div`
   display: flex;
   flex-direction: column;
 
+  .emojiDiv {
+    position: relative;
+    cursor: pointer;
+  }
+  .emoji-picker-react {
+    position: absolute;
+    top: -345px;
+    z-index: 10;
+    left: 10px;
+  }
   .rightHeader {
     padding: 20px;
     display: flex;
@@ -139,9 +219,11 @@ const Right = styled.div`
   .messagesDiv {
     flex: 1;
     position: relative;
-
+    z-index: 1;
     padding: 30px;
+
     overflow: auto;
+    /* background: rgb(229, 221, 213) url(${whatsappLight}); */
     background-color: rgb(229, 221, 213);
     ::-webkit-scrollbar {
       width: 6px;
@@ -154,17 +236,6 @@ const Right = styled.div`
       background: hsla(0, 0%, 100%, 0.1);
     }
   }
-  .background {
-    position: absolute;
-    opacity: 0.1;
-    background-repeat: repeat;
-    background-position: center;
-    background: url(${whatsappLight});
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-  }
 
   .inputFooter {
     display: flex;
@@ -172,6 +243,7 @@ const Right = styled.div`
     align-items: center;
     height: 62px;
     border-top: 1px solid lightgray;
+    position: relative;
   }
   .inputText {
     flex: 1;

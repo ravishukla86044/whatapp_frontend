@@ -5,18 +5,67 @@ import { Avatar, IconButton, RootRef } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import { ChatRoomItem } from "./ChatRoomItem";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getChatRooms } from "../../Redux/action";
+import AddIcon from "@material-ui/icons/Add";
+import axios from "axios";
 
 function LeftBox() {
   const dispatch = useDispatch();
   const { chatRoom, user } = useSelector((state) => state.auth);
+  const [userSearch, setUserSearch] = useState();
+  const [selectedUser, setSelectedUser] = useState([]);
+  const [allUser, setAllUser] = useState([]);
+  const friendIdRef = useRef();
+
+  async function getAllUser() {
+    let { data } = await axios.get("http://localhost:3001/users");
+    //console.log(data, "this is data");
+    setAllUser(data.user);
+  }
 
   useEffect(() => {
     dispatch(getChatRooms(user._id));
+    getAllUser();
   }, []);
 
+  const handleSearchUser = (e) => {
+    //console.log(allUser);
+    setUserSearch(e.target.value);
+    let newallUser = allUser.filter((a) => a.name.includes(userSearch) && a._id !== user._id);
+    setSelectedUser(newallUser);
+  };
+  const handelAddchatroom = async () => {
+    //console.log(chatroom);
+    for (var i = 0; i < chatRoom.length; i++) {
+      let mem = chatRoom[i]?.members;
+
+      for (var j = 0; j < mem.length; j++) {
+        if (mem[j]?._id === user._id) {
+          alert("Friend alreday in the list");
+          setUserSearch("");
+          return;
+        }
+      }
+    }
+    if (!friendIdRef.current) {
+      return;
+    }
+    let body = {
+      members: [user._id, friendIdRef.current],
+    };
+    // try {
+    //   axios.post("http://localhost:3001/chatrooms", body).then((res) => {
+    //     dispatch(getChatRooms(user._id));
+    //     setUserSearch("");
+    //   });
+
+    //   //console.log(data);
+    // } catch (e) {
+    //   console.log(e);
+    // }
+  };
   return (
     <Left>
       <div className="leftBox_Header">
@@ -36,7 +85,31 @@ function LeftBox() {
       <div className="leftSearch">
         <div className="leftSearch_Con">
           <SearchOutlinedIcon />
-          <input type="text" placeholder="Search or Start a new chat" />
+          <input
+            type="text"
+            placeholder="Search or Start a new chat"
+            value={userSearch}
+            onChange={handleSearchUser}
+          />
+          <AddIcon className="plusButton" onClick={handelAddchatroom} />
+          {selectedUser.length > 0 && userSearch !== "" && (
+            <div className="hidden">
+              {selectedUser.map((a) => {
+                return (
+                  <div
+                    onClick={() => {
+                      setUserSearch(a.name);
+                      setSelectedUser([]);
+                      friendIdRef.current = a._id;
+                    }}
+                    className="hiddenUser"
+                  >
+                    {a.name}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
       <div className="chatroom">
@@ -82,6 +155,7 @@ const Left = styled.div`
     width: 100%;
     height: 35px;
     border-radius: 20px;
+    position: relative;
   }
   .leftSearch_Con .MuiSvgIcon-root {
     color: grey;
@@ -108,5 +182,35 @@ const Left = styled.div`
       background: hsla(0, 0%, 100%, 0.1);
     }
   }
+
+  .plusButton {
+    margin-left: auto;
+    cursor: pointer;
+  }
+
+  .hidden {
+    position: absolute;
+    top: 42px;
+    border: #ccc;
+    border-radius: 12px;
+    padding: 5px;
+    font-size: 14px;
+    font-weight: 400;
+    z-index: 70;
+    background-color: #ededed;
+    width: 100%;
+    height: 100vh;
+  }
+  .hiddenUser {
+    border-bottom: 1px solid #edeff1;
+    margin: 5px 0px;
+    cursor: pointer;
+    height: 45px;
+    padding: 10px 20px;
+  }
+  .hiddenUser:hover {
+    background: rgba(82 75 75 / 10%);
+  }
 `;
+
 export { LeftBox };
