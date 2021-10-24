@@ -1,4 +1,6 @@
 import {
+  SETCURRENTCHAT,
+  GETCHATROOMS,
   LOGIN_FAILURE,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -7,6 +9,7 @@ import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   UPDATE_PROFILE,
+  SETCURRENTCHATMESSAGES,
 } from "./actionType";
 import axios from "axios";
 
@@ -46,17 +49,16 @@ const logOut = () => {
 
 const loginUser = (payload) => (dispatch) => {
   dispatch(loginRequest());
+  //console.log(payload);
   axios
-    .post("http://http://localhost:3001/login", payload)
+    .post("http://localhost:3001/login", payload)
     .then((res) => {
-      console.log("res:", res);
-
       dispatch(loginSuccess(res.data));
     })
     .catch((err) => {
-      console.log("err:", err.response.data);
+      console.log("err:", err);
 
-      dispatch(loginFailure(err.response.data));
+      dispatch(loginFailure(err));
     });
 };
 
@@ -87,11 +89,9 @@ const registerUser = (payload) => (dispatch) => {
   axios
     .post("http://localhost:3001/register", payload)
     .then((res) => {
-      console.log("rigister", res.data);
       dispatch(registerSuccess(res.data));
     })
     .catch((err) => {
-      console.log("rigisterError", err);
       dispatch(registerFailure(err.response.data));
     });
 };
@@ -99,7 +99,7 @@ const registerUser = (payload) => (dispatch) => {
 const googleSignUp = (payload) => (dispatch) => {
   dispatch(registerRequest());
   axios
-    .post("http://localhost:3001/googlesignup", payload)
+    .post("http://localhost:3001/googleLogin", payload)
     .then((res) => {
       dispatch(registerSuccess(res.data));
     })
@@ -108,4 +108,62 @@ const googleSignUp = (payload) => (dispatch) => {
     });
 };
 
-export { loginUser, registerUser, updateProfile, logOut, googleSignUp };
+//...............................//...............................
+
+const getChatSuccess = (payload) => {
+  return {
+    type: GETCHATROOMS,
+    payload,
+  };
+};
+
+const getChatRooms = (payload) => (dispatch) => {
+  axios
+    .get(`http://localhost:3001/chatrooms/${payload}`)
+    .then((res) => {
+      //console.log("chatroomrs res:", res.data.chatRoom);
+
+      dispatch(getChatSuccess(res.data.chatRoom));
+    })
+    .catch((err) => {
+      console.log("err:", err);
+    });
+};
+
+const setCurrentChat = (payload) => {
+  return {
+    type: SETCURRENTCHAT,
+    payload,
+  };
+};
+
+const setCurrentChatMessages = (payload) => {
+  return {
+    type: SETCURRENTCHATMESSAGES,
+    payload,
+  };
+};
+
+const setCurrentChatAll = (payload) => (dispatch) => {
+  dispatch(setCurrentChat(payload));
+  axios
+    .get(`http://localhost:3001/messages/${payload._id}`)
+    .then((res) => {
+      //console.log(res.data, "setCurrnetAll");
+      dispatch(setCurrentChatMessages(res.data.message));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export {
+  loginUser,
+  registerUser,
+  updateProfile,
+  logOut,
+  googleSignUp,
+  getChatRooms,
+  setCurrentChatAll,
+  setCurrentChatMessages,
+};

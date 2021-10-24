@@ -1,12 +1,36 @@
 import { Avatar } from "@material-ui/core";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { setCurrentChatAll } from "../../Redux/action";
 
-function ChatRoomItem() {
+function ChatRoomItem({ members = [], data }) {
+  const { user, currentChatRoom } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const [mem, setMem] = useState([]);
+
+  useEffect(() => {
+    extractMembers();
+    //console.log(mem, members);
+  }, []);
+
+  const extractMembers = () => {
+    let a = [];
+    for (var i = 0; i < members.length; i++) {
+      if (members[i]?._id !== user?._id) a.push(members[i]);
+    }
+    setMem(a);
+  };
+
+  const handelCurrentChat = () => {
+    dispatch(setCurrentChatAll(data));
+  };
+
   return (
-    <All>
-      <Avatar></Avatar>
+    <All onClick={handelCurrentChat}>
+      <Avatar>{mem[0]?.name?.charAt(0)}</Avatar>
       <div className="members">
-        <h3>room name</h3>
+        <h3>{mem[0]?.name}</h3>
         <p>last message</p>
       </div>
     </All>

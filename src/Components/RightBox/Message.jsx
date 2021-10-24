@@ -1,13 +1,20 @@
 import styled from "styled-components";
+import Timestamp from "react-timestamp";
+import { useSelector } from "react-redux";
 
-function Message() {
+function Message({ message }) {
+  console.log(message);
+
+  const { user } = useSelector((state) => state.auth);
   return (
     <Mess>
-      <div className="reciever">
+      <div className={message.senderId == user._id ? "myMessage" : "reciever"}>
         <p>
-          <span className="senderName">Another</span>
-          this is the message
-          <span className="timeStamp">12 min ago</span>
+          <span className="senderName"></span>
+          {message.text}
+          <span className="timeStamp">
+            <Timestamp relative date={message.createdAt} autoUpdate />
+          </span>
         </p>
       </div>
     </Mess>
@@ -30,7 +37,7 @@ const Mess = styled.div`
   .myMessage {
     position: relative;
     margin-left: auto;
-    background: green;
+    background: #dcf8c6;
     padding: 10px;
     width: fit-content;
     border-radius: 10px;

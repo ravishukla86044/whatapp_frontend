@@ -10,10 +10,10 @@ import { useSelector } from "react-redux";
 function App() {
   const { user } = useSelector((state) => state.auth);
   useEffect(() => {}, []);
-
+  //console.log(user, "inside leftbox");
   return (
     <div className="App">
-      {!user?._id ? (
+      {!user ? (
         <LoginOrSignUp />
       ) : (
         <div className="box">

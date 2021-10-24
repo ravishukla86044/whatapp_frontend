@@ -1,12 +1,22 @@
 import styled from "styled-components";
 import ChatIcon from "@material-ui/icons/Chat";
 import DonutLargeIcon from "@material-ui/icons/DonutLarge";
-import { Avatar, IconButton } from "@material-ui/core";
+import { Avatar, IconButton, RootRef } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import { ChatRoomItem } from "./ChatRoomItem";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getChatRooms } from "../../Redux/action";
 
 function LeftBox() {
+  const dispatch = useDispatch();
+  const { chatRoom, user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(getChatRooms(user._id));
+  }, []);
+
   return (
     <Left>
       <div className="leftBox_Header">
@@ -30,10 +40,9 @@ function LeftBox() {
         </div>
       </div>
       <div className="chatroom">
-        <ChatRoomItem />
-        <ChatRoomItem />
-        <ChatRoomItem />
-        <ChatRoomItem />
+        {chatRoom?.map((a) => (
+          <ChatRoomItem key={a._id} id={a._id} members={a.members} data={a} />
+        ))}
       </div>
     </Left>
   );

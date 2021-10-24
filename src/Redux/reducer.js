@@ -1,4 +1,5 @@
 import {
+  GETCHATROOMS,
   LOGIN_FAILURE,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -6,6 +7,8 @@ import {
   REGISTER_FAILURE,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
+  SETCURRENTCHAT,
+  SETCURRENTCHATMESSAGES,
   UPDATE_PROFILE,
 } from "./actionType";
 
@@ -20,6 +23,9 @@ const initState = {
   isError: false,
   errMsg: "",
   isLight: true,
+  chatRoom: [],
+  currentChatRoom: "",
+  currentChatMessages: [],
 };
 
 const authReducer = (state = initState, { type, payload }) => {
@@ -33,7 +39,7 @@ const authReducer = (state = initState, { type, payload }) => {
     }
     case LOGIN_SUCCESS: {
       //   saveData("token", payload.token);
-      //   saveData("user", payload.user);
+
       return {
         ...state,
         isAuth: true,
@@ -92,13 +98,30 @@ const authReducer = (state = initState, { type, payload }) => {
       };
     }
     case LOGOUT: {
-      //   saveData("token", "");
-      //   saveData("user", "");
       return {
         ...state,
         isAuth: false,
         user: "",
         token: "",
+      };
+    }
+
+    case GETCHATROOMS: {
+      return {
+        ...state,
+        chatRoom: payload,
+      };
+    }
+    case SETCURRENTCHAT: {
+      return {
+        ...state,
+        currentChatRoom: payload,
+      };
+    }
+    case SETCURRENTCHATMESSAGES: {
+      return {
+        ...state,
+        currentChatMessages: payload,
       };
     }
     default:
