@@ -16,6 +16,7 @@ import axios from "axios";
 import { setCurrentChatMessages } from "../../Redux/action";
 import { io } from "socket.io-client";
 import Picker from "emoji-picker-react";
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
 function RightBox() {
   const { currentChatRoom, user, currentChatMessages } = useSelector((state) => state.auth);
@@ -124,6 +125,16 @@ function RightBox() {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [currentChatMessages]);
 
+  const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
+    useSpeechRecognition();
+
+  const handelSpeech = () => {
+    SpeechRecognition.startListening();
+  };
+
+  useEffect(() => {
+    setText(transcript);
+  }, [transcript]);
   return (
     <Right>
       {!currentChatRoom ? (
@@ -173,7 +184,7 @@ function RightBox() {
                 }}
               />
             </form>
-            <MicOutlinedIcon />
+            <MicOutlinedIcon style={{ cursor: "pointer" }} onClick={handelSpeech} />
           </div>
         </>
       )}
