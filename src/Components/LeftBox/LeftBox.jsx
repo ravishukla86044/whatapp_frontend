@@ -20,7 +20,7 @@ function LeftBox() {
   const friendIdRef = useRef();
 
   async function getAllUser() {
-    let { data } = await axios.get("http://localhost:3001/users");
+    let { data } = await axios.get("https://herokuwhatsapp86044.herokuapp.com/users");
     //console.log(data, "this is data");
     setAllUser(data.user);
   }
@@ -55,16 +55,16 @@ function LeftBox() {
     let body = {
       members: [user._id, friendIdRef.current],
     };
-    // try {
-    //   axios.post("http://localhost:3001/chatrooms", body).then((res) => {
-    //     dispatch(getChatRooms(user._id));
-    //     setUserSearch("");
-    //   });
+    try {
+      axios.post("https://herokuwhatsapp86044.herokuapp.com/chatrooms", body).then((res) => {
+        dispatch(getChatRooms(user._id));
+        setUserSearch("");
+      });
 
-    //   //console.log(data);
-    // } catch (e) {
-    //   console.log(e);
-    // }
+      //console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <Left>

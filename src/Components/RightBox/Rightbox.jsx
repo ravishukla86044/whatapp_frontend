@@ -52,7 +52,7 @@ function RightBox() {
   }, [currentChatRoom]);
 
   useEffect(() => {
-    socket.current = io("http://localhost:3001");
+    socket.current = io("https://herokuwhatsapp86044.herokuapp.com");
     socket.current.on("welcome", (data) => {
       // console.log(data);
     });
@@ -112,7 +112,7 @@ function RightBox() {
     // let a = [...currentChatMessages, payload];
     // dispatch(setCurrentChatMessages(a));
     try {
-      axios.post("http://localhost:3001/messages", payload).then((res) => {
+      axios.post("https://herokuwhatsapp86044.herokuapp.com/messages", payload).then((res) => {
         console.log(res);
         setText("");
       });

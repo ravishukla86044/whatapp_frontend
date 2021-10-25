@@ -51,7 +51,7 @@ const loginUser = (payload) => (dispatch) => {
   dispatch(loginRequest());
   //console.log(payload);
   axios
-    .post("http://localhost:3001/login", payload)
+    .post("https://herokuwhatsapp86044.herokuapp.com/login", payload)
     .then((res) => {
       dispatch(loginSuccess(res.data));
     })
@@ -87,7 +87,7 @@ const registerFailure = (payload) => {
 const registerUser = (payload) => (dispatch) => {
   dispatch(registerRequest());
   axios
-    .post("http://localhost:3001/register", payload)
+    .post("https://herokuwhatsapp86044.herokuapp.com/register", payload)
     .then((res) => {
       dispatch(registerSuccess(res.data));
     })
@@ -99,7 +99,7 @@ const registerUser = (payload) => (dispatch) => {
 const googleSignUp = (payload) => (dispatch) => {
   dispatch(registerRequest());
   axios
-    .post("http://localhost:3001/googleLogin", payload)
+    .post("https://herokuwhatsapp86044.herokuapp.com/googleLogin", payload)
     .then((res) => {
       dispatch(registerSuccess(res.data));
     })
@@ -119,7 +119,7 @@ const getChatSuccess = (payload) => {
 
 const getChatRooms = (payload) => (dispatch) => {
   axios
-    .get(`http://localhost:3001/chatrooms/${payload}`)
+    .get(`https://herokuwhatsapp86044.herokuapp.com/chatrooms/${payload}`)
     .then((res) => {
       //console.log("chatroomrs res:", res.data.chatRoom);
 
@@ -147,7 +147,7 @@ const setCurrentChatMessages = (payload) => {
 const setCurrentChatAll = (payload) => (dispatch) => {
   dispatch(setCurrentChat(payload));
   axios
-    .get(`http://localhost:3001/messages/${payload._id}`)
+    .get(`https://herokuwhatsapp86044.herokuapp.com/messages/${payload._id}`)
     .then((res) => {
       //console.log(res.data, "setCurrnetAll");
       dispatch(setCurrentChatMessages(res.data.message));
