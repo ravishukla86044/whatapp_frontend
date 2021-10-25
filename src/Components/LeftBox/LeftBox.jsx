@@ -38,17 +38,17 @@ function LeftBox() {
   };
   const handelAddchatroom = async () => {
     //console.log(chatroom);
-    for (var i = 0; i < chatRoom.length; i++) {
-      let mem = chatRoom[i]?.members;
+    // for (var i = 0; i < chatRoom.length; i++) {
+    //   let mem = chatRoom[i]?.members;
 
-      for (var j = 0; j < mem.length; j++) {
-        if (mem[j]?._id === user._id) {
-          alert("Friend alreday in the list");
-          setUserSearch("");
-          return;
-        }
-      }
-    }
+    //   for (var j = 0; j < mem.length; j++) {
+    //     if (mem[j]?._id === user._id) {
+    //       alert("Friend alreday in the list");
+    //       setUserSearch("");
+    //       return;
+    //     }
+    //   }
+    // }
     if (!friendIdRef.current) {
       return;
     }
