@@ -104,7 +104,7 @@ function LeftBox() {
                     }}
                     className="hiddenUser"
                   >
-                    {a.name}
+                    {a.email}
                   </div>
                 );
               })}
