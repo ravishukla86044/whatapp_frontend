@@ -64,6 +64,7 @@ function Login() {
           variant="outlined"
           onKeyUp={onEnter}
           name="password"
+          type="password"
           required
           error={error.password}
           helperText={error.password}
