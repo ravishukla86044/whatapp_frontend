@@ -17,6 +17,7 @@ function LeftBox() {
   const [userSearch, setUserSearch] = useState();
   const [selectedUser, setSelectedUser] = useState([]);
   const [allUser, setAllUser] = useState([]);
+
   const friendIdRef = useRef();
 
   async function getAllUser() {
@@ -36,22 +37,36 @@ function LeftBox() {
     let newallUser = allUser.filter((a) => a.name.includes(userSearch) && a._id !== user._id);
     setSelectedUser(newallUser);
   };
-  const handelAddchatroom = async () => {
-    //console.log(chatroom);
-    // for (var i = 0; i < chatRoom.length; i++) {
-    //   let mem = chatRoom[i]?.members;
 
-    //   for (var j = 0; j < mem.length; j++) {
-    //     if (mem[j]?._id === user._id) {
-    //       alert("Friend alreday in the list");
-    //       setUserSearch("");
-    //       return;
-    //     }
-    //   }
-    // }
+  const getAllOtherMembers = () => {
+    let flag = true;
+    console.log(chatRoom);
+    for (var i = 0; i < chatRoom.length; i++) {
+      for (var j = 0; j < chatRoom[i]?.members?.length; j++) {
+        if (chatRoom[i]?.members[j]?._id == friendIdRef.current) {
+          flag = false;
+          console.log("ues");
+          break;
+        }
+      }
+      if (!flag) break;
+    }
+    console.log(flag);
+    return flag;
+  };
+
+  const handelAddchatroom = async () => {
     if (!friendIdRef.current) {
       return;
     }
+    let flag = getAllOtherMembers();
+    if (!flag) {
+      alert("Friend alreday in the list");
+      setUserSearch("");
+      friendIdRef.current = null;
+      return;
+    }
+
     let body = {
       members: [user._id, friendIdRef.current],
     };
@@ -59,6 +74,7 @@ function LeftBox() {
       axios.post("https://herokuwhatsapp86044.herokuapp.com/chatrooms", body).then((res) => {
         dispatch(getChatRooms(user._id));
         setUserSearch("");
+        friendIdRef.current = null;
       });
 
       //console.log(data);
@@ -69,7 +85,7 @@ function LeftBox() {
   return (
     <Left>
       <div className="leftBox_Header">
-        <Avatar>d</Avatar>
+        <Avatar>{user?.name?.charAt(0)}</Avatar>
         <div className="headerRight">
           <IconButton>
             <DonutLargeIcon />

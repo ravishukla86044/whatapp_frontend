@@ -144,7 +144,7 @@ function RightBox() {
       ) : (
         <>
           <div className="rightHeader">
-            <Avatar></Avatar>
+            <Avatar>{mem[0]?.name?.charAt(0)}</Avatar>
             <div className="rightHeader_name">
               <h3>{mem[0]?.name}</h3>
               <p>Last seen ....</p>

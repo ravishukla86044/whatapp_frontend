@@ -31,7 +31,7 @@ function ChatRoomItem({ members = [], data }) {
       <Avatar>{mem[0]?.name?.charAt(0)}</Avatar>
       <div className="members">
         <h3>{mem[0]?.name}</h3>
-        <p>last message</p>
+        {/* <p>last message</p> */}
       </div>
     </All>
   );
@@ -48,6 +48,12 @@ const All = styled.div`
   }
   .members {
     margin-left: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .members h3 {
+    margin-bottom: 5px;
   }
   & h2 {
     font-size: 16px;
